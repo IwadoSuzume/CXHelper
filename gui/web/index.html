@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>CXHelper</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="titlebar">
+    <div class="titlebar-drag pywebview-drag-region"></div>
+    <div class="titlebar-buttons">
+      <button id="btn-min" class="title-btn" title="最小化">&#xE921;</button>
+      <button id="btn-close" class="title-btn title-btn-close" title="关闭">&#xE8BB;</button>
+    </div>
+  </div>
+
+  <div class="shell-body">
+
+    <div class="splash" id="splash">
+      <img class="splash-mark" src="assets/logo.png" alt="CXHelper">
+      <div class="splash-title">CXHelper</div>
+      <div class="splash-spinner"></div>
+    </div>
+
+    <nav class="nav-rail">
+      <div class="brand-badge" title="CXHelper"><img src="assets/logo.png" alt="CXHelper"></div>
+      <button class="tab active" data-tab="dashboard" title="工作台">
+        <svg class="tab-icon" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="8" height="8" rx="2.5" fill="currentColor"/>
+          <rect x="13" y="3" width="8" height="8" rx="2.5" fill="currentColor"/>
+          <rect x="3" y="13" width="8" height="8" rx="2.5" fill="currentColor"/>
+          <rect x="13" y="13" width="8" height="8" rx="2.5" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="tab" data-tab="settings" title="设置">
+        <svg class="tab-icon" viewBox="0 0 24 24">
+          <line x1="4" y1="6" x2="20" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="9" cy="6" r="2.4" fill="currentColor"/>
+          <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="16" cy="12" r="2.4" fill="currentColor"/>
+          <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="11" cy="18" r="2.4" fill="currentColor"/>
+        </svg>
+      </button>
+    </nav>
+
+    <div class="tab-panels">
+
+      <section class="tab-panel active" id="panel-dashboard">
+        <h1 class="page-title">工作台</h1>
+        <div class="dashboard-grid">
+
+          <div class="col-main">
+            <div class="card courses-card">
+              <div class="row-between">
+                <div class="section-title">课程列表</div>
+                <div class="btn-row btn-row-tight">
+                  <button id="btn-select-all" class="btn btn-secondary btn-sm">全选</button>
+                  <button id="btn-select-none" class="btn btn-secondary btn-sm">全不选</button>
+                  <button id="btn-refresh-courses" class="btn btn-secondary btn-sm">刷新</button>
+                </div>
+              </div>
+              <p class="hint" id="courses-hint">登录后自动加载课程列表。</p>
+              <div class="course-list" id="course-list"><div class="empty-hint">暂无数据</div></div>
+
+              <div class="progress-block">
+                <div class="progress-label">实时进度<span class="live-dot" id="live-dot" title="运行中"></span></div>
+                <div class="progress-row">
+                  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+                  <div class="progress-percent" id="progress-percent">--</div>
+                </div>
+                <div class="progress-caption" id="progress-caption">尚未开始</div>
+                <div class="active-list" id="active-list"></div>
+                <div class="current-status" id="current-status"></div>
+                <div class="run-alert" id="run-alert" hidden></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-side">
+            <div class="card login-card" id="login-card">
+              <div class="row-between">
+                <div class="section-title">登录状态</div>
+                <div class="login-status-group">
+                  <div class="status-chip" id="login-status">未登录</div>
+                  <button id="btn-logout" class="btn btn-secondary btn-sm" hidden>退出登录</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card account-card" id="account-card">
+              <div class="section-title">账号</div>
+              <form class="login-form" id="login-form" autocomplete="off">
+                <input id="in-username" class="text-input" type="text" inputmode="numeric" placeholder="手机号" maxlength="20">
+                <input id="in-password" class="text-input" type="password" placeholder="密码">
+                <div class="form-foot">
+                  <label class="check-row"><input type="checkbox" id="in-remember"> 记住密码</label>
+                  <button id="btn-login" type="submit" class="btn btn-primary btn-sm">登录</button>
+                </div>
+              </form>
+              <div class="account-info" id="account-info" hidden>
+                <div class="avatar" id="account-avatar"></div>
+                <div class="account-text">
+                  <div class="account-name" id="account-name"></div>
+                  <div class="account-sub" id="account-sub"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card overview-card">
+              <div class="section-title">运行概览</div>
+              <div class="stat-grid">
+                <div class="stat"><div class="stat-num" id="stat-selected">0</div><div class="stat-label">已选课程</div></div>
+                <div class="stat"><div class="stat-num" id="stat-chapters">--</div><div class="stat-label">完成章节</div></div>
+                <div class="stat"><div class="stat-num" id="stat-elapsed">00:00</div><div class="stat-label">运行用时</div></div>
+              </div>
+            </div>
+
+            <div class="run-card">
+              <button id="btn-run-toggle" class="btn btn-run btn-primary">开始运行</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="tab-panel" id="panel-settings">
+        <h1 class="page-title">设置</h1>
+
+        <div class="card">
+          <div class="section-title">运行参数</div>
+          <div class="field-row">
+            <label class="field-label">视频倍速
+              <input type="number" id="opt-speed" class="text-input" step="0.25" min="1" max="2" placeholder="1 ~ 2">
+            </label>
+            <label class="field-label">同时进行的章节数
+              <input type="number" id="opt-jobs" class="text-input" step="1" min="1" max="8" placeholder="默认 4">
+            </label>
+          </div>
+          <div class="field-row">
+            <label class="field-label">遇到未开放的任务点
+              <select id="opt-notopen" class="select-input">
+                <option value="retry">重试（默认）</option>
+                <option value="continue">跳过，继续后面的章节</option>
+              </select>
+            </label>
+            <label class="field-label">失败重试间隔（秒）
+              <input type="number" id="opt-retry-interval" class="text-input" step="0.5" min="0" placeholder="默认 1">
+            </label>
+          </div>
+          <p class="hint">倍速最高 2 倍，过快容易触发验证码。</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">题库（章节检测）</div>
+          <div class="field-row">
+            <label class="field-label">题库
+              <select id="opt-tiku-provider" class="select-input">
+                <option value="">不使用（跳过章节检测）</option>
+                <option value="TikuYanxi">言溪题库</option>
+                <option value="TikuLike">LIKE 知识库</option>
+                <option value="TikuGo">GO 题（网课小工具）</option>
+                <option value="TikuAdapter">TikuAdapter（自建）</option>
+                <option value="AI">AI 大模型（OpenAI 兼容）</option>
+                <option value="SiliconFlow">硅基流动</option>
+              </select>
+            </label>
+            <label class="field-label">最低题库覆盖率
+              <input type="number" id="opt-tiku-cover" class="text-input" step="0.05" min="0" max="1" placeholder="默认 0.9">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="TikuYanxi TikuLike">
+            <label class="field-label">Token（多个用英文逗号分隔）
+              <input type="text" id="opt-tiku-tokens" class="text-input">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="TikuGo">
+            <label class="field-label">授权 Token（可选）
+              <input type="text" id="opt-tiku-goauth" class="text-input">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="TikuAdapter">
+            <label class="field-label">TikuAdapter 地址
+              <input type="text" id="opt-tiku-url" class="text-input" placeholder="http://127.0.0.1:8060/adapter-service/search">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="AI">
+            <label class="field-label">API 地址
+              <input type="text" id="opt-ai-endpoint" class="text-input" placeholder="https://example.com/v1">
+            </label>
+            <label class="field-label">模型
+              <input type="text" id="opt-ai-model" class="text-input">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="AI">
+            <label class="field-label">API Key
+              <input type="password" id="opt-ai-key" class="text-input">
+            </label>
+          </div>
+          <div class="field-row" data-tiku="SiliconFlow">
+            <label class="field-label">API Key
+              <input type="password" id="opt-sf-key" class="text-input">
+            </label>
+            <label class="field-label">模型
+              <input type="text" id="opt-sf-model" class="text-input" placeholder="deepseek-ai/DeepSeek-R1">
+            </label>
+          </div>
+          <div class="switch-row" data-tiku-any>
+            <div>
+              <div class="switch-title">自动提交答案</div>
+              <div class="hint">关闭时只保存答案，可到学习通自行检查后提交。</div>
+            </div>
+            <button class="switch" id="opt-tiku-submit" role="switch" aria-checked="false"><span class="switch-thumb"></span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="switch-row">
+            <div>
+              <div class="switch-title">完成后增加章节学习次数</div>
+              <div class="hint">任务点全部完成后，继续访问章节直到达到目标次数。</div>
+            </div>
+            <button class="switch" id="opt-learn" role="switch" aria-checked="false"><span class="switch-thumb"></span></button>
+          </div>
+          <div class="field-row" id="learn-fields">
+            <label class="field-label">目标总次数
+              <input type="number" id="opt-learn-target" class="text-input" step="10" min="1" placeholder="默认 100">
+            </label>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">完成通知</div>
+          <div class="field-row">
+            <label class="field-label">推送方式
+              <select id="opt-notify-provider" class="select-input">
+                <option value="">不使用</option>
+                <option value="ServerChan">Server 酱</option>
+                <option value="Qmsg">Qmsg 酱</option>
+                <option value="Bark">Bark</option>
+                <option value="Telegram">Telegram</option>
+              </select>
+            </label>
+            <label class="field-label" data-notify-any>推送地址
+              <input type="text" id="opt-notify-url" class="text-input" placeholder="https://sctapi.ftqq.com/xxxx.send">
+            </label>
+          </div>
+          <div class="field-row" data-notify="Telegram">
+            <label class="field-label">Chat ID
+              <input type="text" id="opt-notify-tg" class="text-input">
+            </label>
+          </div>
+        </div>
+
+        <div class="btn-row settings-actions">
+          <button id="btn-save-settings" class="btn btn-primary">保存设置</button>
+          <button id="btn-open-folder" class="btn btn-secondary">打开数据文件夹</button>
+          <button id="btn-visit-site" class="btn btn-secondary">访问我的网站</button>
+          <span class="save-hint" id="save-hint"></span>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="statusbar">
+    <span id="status-text">© 2026 Suzume</span>
+    <span id="version-text"></span>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

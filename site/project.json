@@ -1,0 +1,11 @@
+{
+  "name": "CXHelper",
+  "description": "超星学习通网课刷课助手",
+  "version": "v3.1.3",
+  "download_url": "/downloads/CXHelper-Setup.exe",
+  "download_label": "下载 Windows 安装包",
+  "download_position": "bottom",
+  "published": true,
+  "content_file": "usage.md",
+  "cover_file": "cover.png"
+}

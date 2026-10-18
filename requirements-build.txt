@@ -1,0 +1,7 @@
+# Release build only (gui\build_release.py) - not needed to run the app.
+-r requirements.txt
+pywebview>=6.0
+pyinstaller>=6.6
+python-minifier>=3.0
+rjsmin>=1.2
+rcssmin>=1.1
