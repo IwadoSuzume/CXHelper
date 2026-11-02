@@ -169,6 +169,5 @@ release/
 # CXHelper: local backups / build stage / project page source
 _backup_*/
 gui/build/
-.claude/
 !/site/
 !config_template.ini

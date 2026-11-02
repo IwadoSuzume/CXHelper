@@ -211,11 +211,11 @@ def write_version_file(version):
                     fileType=0x1, subtype=0x0, date=(0, 0)),
   kids=[
     StringFileInfo([StringTable('080404b0', [
-      StringStruct('CompanyName', 'Suzume'),
+      StringStruct('CompanyName', 'Sensu'),
       StringStruct('FileDescription', 'CXHelper'),
       StringStruct('FileVersion', %(v)r),
       StringStruct('InternalName', 'CXHelper'),
-      StringStruct('LegalCopyright', 'chaoxing (c) Samueli924, GPL-3.0; GUI by Suzume'),
+      StringStruct('LegalCopyright', 'chaoxing (c) Samueli924, GPL-3.0; GUI by Sensu'),
       StringStruct('OriginalFilename', 'CXHelper.exe'),
       StringStruct('ProductName', 'CXHelper'),
       StringStruct('ProductVersion', %(v)r)])]),
